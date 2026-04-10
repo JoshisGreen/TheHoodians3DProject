@@ -26,6 +26,8 @@ public class FirstPersonController : MonoBehaviour
     public bool canWalk;
     public float deathTime;
 
+    public GameObject pickUpSound;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -147,6 +149,8 @@ public class FirstPersonController : MonoBehaviour
 
             ScoreManager.instance.AddPart();
             Destroy(collision.gameObject);
+            GameObject.Find("PickUpAudio").GetComponent<AudioSource>().Play();
+
 
 
 

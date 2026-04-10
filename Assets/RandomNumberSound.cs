@@ -16,8 +16,8 @@ public class RandomNumberSound : MonoBehaviour
     {
         while (true)
         {
-            int number = Random.Range(1, 11); 
-            Debug.Log("Picked: " + number);
+            int number = Random.Range(1, 20); 
+            //Debug.Log("Picked: " + number);
 
             if (number == 2)
             {
