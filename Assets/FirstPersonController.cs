@@ -26,10 +26,12 @@ public class FirstPersonController : MonoBehaviour
     public bool canWalk;
     public float deathTime;
 
+    public GameObject pickUpSound;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        //powerMeter.gameObject.SetActive(false);
+        powerMeter.gameObject.SetActive(false);
         canWalk = true;
     }
 
@@ -53,59 +55,60 @@ public class FirstPersonController : MonoBehaviour
         }
 
 
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-           // if (!itemHeld)
-           // {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (!itemHeld)
+            {
 
-              //  if (Physics.Raycast(cameraPosition.position, cameraPosition.forward, out RaycastHit reach, 1.5f, interactMask))
-               // {
-                //    itemHeld = true;
-                 //   currentItem = reach.collider.gameObject;
-                  //  currentItem.GetComponent<ItemController>().isHeld = true;
-                   // currentItem.GetComponent<Rigidbody>().useGravity = false;
+                if (Physics.Raycast(cameraPosition.position, cameraPosition.forward, out RaycastHit reach, 1.5f, interactMask))
+                {
+                    itemHeld = true;
+                 currentItem = reach.collider.gameObject;
+                    currentItem.GetComponent<StoneController>().isHeld = true;
+                    currentItem.GetComponent<Rigidbody>().useGravity = false;
 
 
-              //  }
-          //  }
-           // else
-          //  {
-              //  itemHeld = false;
-             //   currentItem.GetComponent<ItemController>().isHeld = false;
-             //   currentItem.GetComponent<Rigidbody>().useGravity = true;
-            //    currentItem = null;
+              }
+           }
+            else
+            {
+               itemHeld = false;
+                currentItem.GetComponent<StoneController>().isHeld = false;
+                currentItem.GetComponent<Rigidbody>().useGravity = true;
+                currentItem = null;
 
-           // }
+           }
 
 
 
             
 
 
-          //  powerMeter.value = throwPower;
-          //  if (Input.GetKeyDown(KeyCode.E) && itemHeld)
-           // {
-           //    throwPower = 0;
-           //   powerMeter.gameObject.SetActive(true);
-           //  }
-          //  if (Input.GetKey(KeyCode.E) && itemHeld)
-         //   {
+           powerMeter.value = throwPower;
+            if (Input.GetKeyDown(KeyCode.E) && itemHeld)
+            {
+               throwPower = 0;
+              powerMeter.gameObject.SetActive(true);
+             }
+            if (Input.GetKey(KeyCode.E) && itemHeld)
+            {
 
-         //   throwPower = Mathf.PingPong(Time.time, 1);
-          //  }
-           // if (Input.GetKeyUp(KeyCode.E) && itemHeld)
-          //  {
-          //   itemHeld = false;
-          //   currentItem.GetComponent<ItemController>().isHeld = false;
-          //  currentItem.GetComponent<Rigidbody>().AddForce(cameraPosition.forward * throwPower * throwMuiltiplier, ForceMode.Impulse);// adds insatnt force in direction cam is facing * by the values of throwmulti and throw power.
-         //   currentItem = null;
-         //    powerMeter.gameObject.SetActive(false);
-         //   throwPower = 0;
-          //  }
+            throwPower = Mathf.PingPong(Time.time, 1);
+            }
+           if (Input.GetKeyUp(KeyCode.E) && itemHeld)
+            {
+             itemHeld = false;
+             currentItem.GetComponent<StoneController>().isHeld = false;
+                currentItem.GetComponent<Rigidbody>().useGravity = true;
+            currentItem.GetComponent<Rigidbody>().AddForce(cameraPosition.forward * throwPower * throwMuiltiplier, ForceMode.Impulse);// adds insatnt force in direction cam is facing * by the values of throwmulti and throw power.
+            currentItem = null;
+             powerMeter.gameObject.SetActive(false);
+            throwPower = 0;
+           }
 
 
 
-        //}
+        }
 
         bool IsGrounded()
         {
@@ -147,6 +150,8 @@ public class FirstPersonController : MonoBehaviour
 
             ScoreManager.instance.AddPart();
             Destroy(collision.gameObject);
+            GameObject.Find("PickUpAudio").GetComponent<AudioSource>().Play();
+
 
 
 

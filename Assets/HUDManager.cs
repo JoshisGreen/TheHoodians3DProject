@@ -28,13 +28,13 @@ public class ScoreManager : MonoBehaviour
 
         timerText.text = "Timer: "   + timer.ToString();
         //healthText.text = "Health: "  + health.ToString();
-        partText.text = "Parts out of 12: " + part.ToString();
+        partText.text = "Parts: " + part.ToString() + "/12";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(part == 12)
+        if(part >= 12)
         {
             GetComponent<AudioSource>().Play();
             part = 0;
@@ -66,6 +66,6 @@ public class ScoreManager : MonoBehaviour
     public void AddPart()
     {
         part += 2;
-        partText.text = "Parts out of 12: " + part.ToString();
+        partText.text = "Parts: " + part.ToString() + "/12";
     }
 }
