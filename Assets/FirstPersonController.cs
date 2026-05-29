@@ -28,6 +28,16 @@ public class FirstPersonController : MonoBehaviour
 
     public GameObject pickUpSound;
 
+    public float sprintMultiplier = 1.8f;
+    public float maxSprintTime = 1f;
+    public float sprintCooldown = 5f;
+
+    private float sprintTimer = 0f;
+    private float cooldownTimer = 0f;
+    private bool isSprinting = false;
+    private bool isOnCooldown = false;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -41,92 +51,106 @@ public class FirstPersonController : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
+        float currentSpeed = speed;
 
-
-        moveDirection = new Vector3(x, 0, z);
-        transform.Translate(speed * Time.deltaTime * moveDirection);
-
-
-
-
-        if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
+      
+        if (isOnCooldown)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);//add an upward, instant force to the player , multiplied by the value of jumpforce
+            cooldownTimer += Time.deltaTime;
+            if (cooldownTimer >= sprintCooldown)
+            {
+                isOnCooldown = false;
+                cooldownTimer = 0f;
+            }
         }
 
+        if (Input.GetKey(KeyCode.LeftShift) && !isOnCooldown && sprintTimer < maxSprintTime)
+        {
+            isSprinting = true;
+            sprintTimer += Time.deltaTime;
+            currentSpeed *= sprintMultiplier;
+        }
+        else
+        {
+            isSprinting = false;
+        }
 
+       
+        if (sprintTimer >= maxSprintTime)
+        {
+            isOnCooldown = true;
+        }
+
+        
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            sprintTimer = 0f;
+        }
+
+        moveDirection = new Vector3(x, 0, z).normalized;
+        transform.Translate(currentSpeed * Time.deltaTime * moveDirection);
+
+        
+        if (IsGrounded() && Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+
+      
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (!itemHeld)
             {
-
                 if (Physics.Raycast(cameraPosition.position, cameraPosition.forward, out RaycastHit reach, 1.5f, interactMask))
                 {
                     itemHeld = true;
-                 currentItem = reach.collider.gameObject;
+                    currentItem = reach.collider.gameObject;
                     currentItem.GetComponent<StoneController>().isHeld = true;
                     currentItem.GetComponent<Rigidbody>().useGravity = false;
-
-
-              }
-           }
+                }
+            }
             else
             {
-               itemHeld = false;
+                itemHeld = false;
                 currentItem.GetComponent<StoneController>().isHeld = false;
                 currentItem.GetComponent<Rigidbody>().useGravity = true;
                 currentItem = null;
-
-           }
-
-
-
-            
-
-
-           powerMeter.value = throwPower;
-            if (Input.GetKeyDown(KeyCode.E) && itemHeld)
-            {
-               throwPower = 0;
-              powerMeter.gameObject.SetActive(true);
-             }
-            if (Input.GetKey(KeyCode.E) && itemHeld)
-            {
-
-            throwPower = Mathf.PingPong(Time.time, 1);
             }
-           if (Input.GetKeyUp(KeyCode.E) && itemHeld)
-            {
-             itemHeld = false;
-             currentItem.GetComponent<StoneController>().isHeld = false;
-                currentItem.GetComponent<Rigidbody>().useGravity = true;
-            currentItem.GetComponent<Rigidbody>().AddForce(cameraPosition.forward * throwPower * throwMuiltiplier, ForceMode.Impulse);// adds insatnt force in direction cam is facing * by the values of throwmulti and throw power.
-            currentItem = null;
-             powerMeter.gameObject.SetActive(false);
-            throwPower = 0;
-           }
-
-
-
         }
 
-        bool IsGrounded()
+        powerMeter.value = throwPower;
+
+        if (Input.GetKeyDown(KeyCode.E) && itemHeld)
         {
-            if (Physics.Raycast(transform.position - new Vector3(0, .9f, 0), Vector3.down, out RaycastHit hit, .2f, groundMask))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            throwPower = 0;
+            powerMeter.gameObject.SetActive(true);
+        }
 
+        if (Input.GetKey(KeyCode.E) && itemHeld)
+        {
+            throwPower = Mathf.PingPong(Time.time, 1);
+        }
 
+        if (Input.GetKeyUp(KeyCode.E) && itemHeld)
+        {
+            itemHeld = false;
+            currentItem.GetComponent<StoneController>().isHeld = false;
+            currentItem.GetComponent<Rigidbody>().useGravity = true;
+            currentItem.GetComponent<Rigidbody>().AddForce(cameraPosition.forward * throwPower * throwMuiltiplier, ForceMode.Impulse);
+
+            currentItem = null;
+            powerMeter.gameObject.SetActive(false);
+            throwPower = 0;
         }
 
         
-
+        bool IsGrounded()
+        {
+            return Physics.Raycast(transform.position - new Vector3(0, .9f, 0), Vector3.down, out RaycastHit hit, .2f, groundMask);
+        }
     }
+
+
 
     void OnCollisionEnter(Collision collision)
     {
