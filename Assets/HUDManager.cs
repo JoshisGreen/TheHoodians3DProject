@@ -36,7 +36,8 @@ public class ScoreManager : MonoBehaviour
     {
         if(part >= 12)
         {
-            GetComponent<AudioSource>().Play();
+            GameObject.Find("FirstPersonController").GetComponent<FirstPersonController>().allCollected = true;
+
             part = 0;
         }
           
