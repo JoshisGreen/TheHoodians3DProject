@@ -40,6 +40,7 @@ public class StoneController : MonoBehaviour
         if (collision.gameObject.CompareTag("Water"))
         {
             Destroy(gameObject);
+            Destroy(collision.gameObject);
         }
 
 

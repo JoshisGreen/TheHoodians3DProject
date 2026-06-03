@@ -37,12 +37,16 @@ public class FirstPersonController : MonoBehaviour
     private bool isSprinting = false;
     private bool isOnCooldown = false;
 
+    public bool allCollected = false;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         powerMeter.gameObject.SetActive(false);
         canWalk = true;
+
+        allCollected = false;
     }
 
     // Update is called once per frame
@@ -148,6 +152,7 @@ public class FirstPersonController : MonoBehaviour
         {
             return Physics.Raycast(transform.position - new Vector3(0, .9f, 0), Vector3.down, out RaycastHit hit, .2f, groundMask);
         }
+   
     }
 
 
@@ -180,6 +185,17 @@ public class FirstPersonController : MonoBehaviour
 
 
         }
+
+
+       if(collision.gameObject.tag == "Final Touch")
+        {
+            if (allCollected == true)
+            {
+                GameObject.Find("Canvas").GetComponent<AudioSource>().Play();
+            }
+        }
+       
+
     }
 
 }
