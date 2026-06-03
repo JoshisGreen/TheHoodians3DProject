@@ -26,9 +26,9 @@ public class ScoreManager : MonoBehaviour
 
         timer = 300;
 
-        timerText.text = "Timer: "   + timer.ToString();
+        timerText.text = "     : "   + timer.ToString();
         //healthText.text = "Health: "  + health.ToString();
-        partText.text = "Parts: " + part.ToString() + "/12";
+        partText.text = "     : " + part.ToString() + "/12";
     }
 
     // Update is called once per frame
@@ -60,12 +60,12 @@ public class ScoreManager : MonoBehaviour
     public void AddTime()
     {
         timer += -1;
-        timerText.text = "Timer: " + timer.ToString();
+        timerText.text = "     : " + timer.ToString();
     }
 
     public void AddPart()
     {
         part += 2;
-        partText.text = "Parts: " + part.ToString() + "/12";
+        partText.text = "     : " + part.ToString() + "/12";
     }
 }
