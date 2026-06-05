@@ -39,6 +39,8 @@ public class FirstPersonController : MonoBehaviour
 
     public bool allCollected = false;
 
+    public GameObject gameWinScreen;
+
 
     void Start()
     {
@@ -47,6 +49,8 @@ public class FirstPersonController : MonoBehaviour
         canWalk = true;
 
         allCollected = false;
+
+        gameWinScreen.SetActive(false);
     }
 
     // Update is called once per frame
@@ -171,6 +175,18 @@ public class FirstPersonController : MonoBehaviour
 
         }
 
+        if (collision.gameObject.tag == "Real Water")
+        {
+
+
+
+            GetComponent<AudioSource>().Play();
+            transform.position = respawnPoint.position;
+
+
+
+        }
+
         if (collision.gameObject.tag == "Part")
         {
 
@@ -191,7 +207,9 @@ public class FirstPersonController : MonoBehaviour
         {
             if (allCollected == true)
             {
+                gameWinScreen.SetActive(true);
                 GameObject.Find("Canvas").GetComponent<AudioSource>().Play();
+                allCollected = false;
             }
         }
        

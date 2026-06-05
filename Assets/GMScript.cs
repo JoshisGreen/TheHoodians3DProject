@@ -8,18 +8,20 @@ public class GMScript : MonoBehaviour
 {
    
     public float timers;
+    
 
-//public bool isGameRunning;
-   // public bool raceEnded;
+
+    //public bool isGameRunning;
+    // public bool raceEnded;
     //public GameObject player;
-   // public GameObject opponent;
-   // public GameObject gamePanel;
-//public TextMeshProUGUI gameText;
+    // public GameObject opponent;
+    // public GameObject gamePanel;
+    //public TextMeshProUGUI gameText;
 
-   /// public float opponentSpeed;
-   //public Rigidbody opponentRB;
+    /// public float opponentSpeed;
+    //public Rigidbody opponentRB;
 
-   // public bool playerWon;
+    // public bool playerWon;
 
     // Start is called before the first frame update
     void Start()

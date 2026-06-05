@@ -8,6 +8,7 @@ TagManager:
   - Part
   - Throwable
   - Final Touch
+  - Real Water
   layers:
   - Default
   - TransparentFX

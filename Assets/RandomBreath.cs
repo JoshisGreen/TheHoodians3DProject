@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomNumberSound : MonoBehaviour
+public class RandomBreath : MonoBehaviour
 {
     private AudioSource audioSource;
 
@@ -16,16 +16,15 @@ public class RandomNumberSound : MonoBehaviour
     {
         while (true)
         {
-            int number = Random.Range(1, 20); 
-            
+            int number = Random.Range(1, 40);
+
 
             if (number == 2)
             {
                 audioSource.Play();
             }
 
-            yield return new WaitForSeconds(2f); 
+            yield return new WaitForSeconds(2f);
         }
     }
 }
-

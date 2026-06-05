@@ -14,6 +14,7 @@ public class ScoreManager : MonoBehaviour
     public Text partText;
     int part = 0;
     public Transform respawnPoint;
+    public GameObject gameOverScreen;
 
     private void Awake()
     {
@@ -29,6 +30,9 @@ public class ScoreManager : MonoBehaviour
         timerText.text = "     : "   + timer.ToString();
         //healthText.text = "Health: "  + health.ToString();
         partText.text = "     : " + part.ToString() + "/12";
+
+        gameOverScreen.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -43,7 +47,8 @@ public class ScoreManager : MonoBehaviour
           
        if(timer == 0)
         {
-           
+            gameOverScreen.SetActive(true);
+            GameObject.Find("GameOverSound").GetComponent<AudioSource>().Play();
             transform.position = respawnPoint.position;
             timer = 200;
             part = 0;
